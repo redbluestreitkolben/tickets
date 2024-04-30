@@ -1,0 +1,30 @@
+
+
+services:
+  postgres:
+    image: postgres
+    container_name: postgres_db
+    restart: always
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+  app:
+    build:
+        context: .
+        dockerfile: Dockerfile
+    environment:
+        - API_KEY=8d1162bb9c27456c9c29e26844bd7327
+    ports:
+        - '3001:3001'
+    depends_on:
+        - postgres
+    volumes:
+        - ./src:/app/src
+
+volumes:
+  postgres_data:
